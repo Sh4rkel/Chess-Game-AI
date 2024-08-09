@@ -46,6 +46,9 @@ class Board:
                     return
 
         if move in self.board.legal_moves:
+            captured_piece = self.board.piece_at(end_square)
+            if captured_piece:
+                print(f"Captured piece: {captured_piece}")  # Debugging
             self.board.push(move)
             print(f"Move {move} executed")  # Debugging
         else:

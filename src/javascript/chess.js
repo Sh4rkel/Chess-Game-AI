@@ -20,9 +20,10 @@ function drop(ev) {
     const pieceColor = piece.alt === piece.alt.toUpperCase() ? 'white' : 'black';
     const current_turn = document.getElementById('current_turn').value;
     console.log(`Piece color: ${pieceColor}, Current turn: ${current_turn}, Chi: ${target.children.length}`);
-    if ((target.children.length === 0 || target.tagName === 'IMG') && pieceColor === current_turn) {
-        if (target.tagName === 'IMG') {
-            target = target.parentElement;
+
+    // Check if the target cell is empty or contains an opponent's piece
+    if ((target.children.length === 0 || (target.children.length > 0 && target.children[0].alt.toUpperCase() !== piece.alt.toUpperCase())) && pieceColor === current_turn) {
+        if (target.children.length > 0) {
             target.innerHTML = ''; // Remove the captured piece
         }
         target.appendChild(piece);
@@ -39,8 +40,8 @@ function drop(ev) {
         const end_notation = end_file + end_rank;
 
         console.log(`Dragging piece from ${start_notation}`); // Just debugging log, it will be removed when the app is finished
-        console.log(`Dropping piece to ${end_notation}`); // same ass the upper log
-        console.log(`Moving piece from ${start_notation} to ${end_notation}`); // idk, i put it for some cases
+        console.log(`Dropping piece to ${end_notation}`); // same as the upper log
+        console.log(`Moving piece from ${start_notation} to ${end_notation}`); // idk, I put it for some cases
         fetch('/move', {
             method: 'POST',
             headers: {

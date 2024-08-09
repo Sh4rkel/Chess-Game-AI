@@ -20,7 +20,11 @@ function drop(ev) {
     const pieceColor = piece.alt === piece.alt.toUpperCase() ? 'white' : 'black';
     const current_turn = document.getElementById('current_turn').value;
     console.log(`Piece color: ${pieceColor}, Current turn: ${current_turn}, Chi: ${target.children.length}`);
-    if (target.children.length === 0 && pieceColor === current_turn) {
+    if ((target.children.length === 0 || target.tagName === 'IMG') && pieceColor === current_turn) {
+        if (target.tagName === 'IMG') {
+            target = target.parentElement;
+            target.innerHTML = ''; // Remove the captured piece
+        }
         target.appendChild(piece);
         const start_pos = data.slice(5);
         const end_pos = target.id.slice(4);

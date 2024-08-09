@@ -15,7 +15,35 @@ class Board:
             raise ValueError("Invalid square")
 
         move = chess.Move(start_square, end_square)
-        print(f"Attempting to move: {move}")  # Debugging
+        piece = self.board.piece_at(start_square)
+
+        if piece.piece_type == chess.PAWN:
+            direction = 1 if piece.color == chess.WHITE else -1
+            start_rank = chess.square_rank(start_square)
+            end_rank = chess.square_rank(end_square)
+            start_file = chess.square_file(start_square)
+            end_file = chess.square_file(end_square)
+
+            # Check for normal one-square move
+            if end_rank == start_rank + direction and start_file == end_file:
+                if move in self.board.legal_moves:
+                    self.board.push(move)
+                    print(f"Move {move} executed")  # Debugging
+                    return
+
+            # Check for two-square move
+            if end_rank == start_rank + 2 * direction and start_file == end_file:
+                if move in self.board.legal_moves:
+                    self.board.push(move)
+                    print(f"Move {move} executed")  # Debugging
+                    return
+
+            # Check for diagonal capture
+            if end_rank == start_rank + direction and abs(end_file - start_file) == 1:
+                if move in self.board.legal_moves:
+                    self.board.push(move)
+                    print(f"Move {move} executed")  # Debugging
+                    return
 
         if move in self.board.legal_moves:
             self.board.push(move)
@@ -33,6 +61,27 @@ class Board:
             return False
 
         move = chess.Move(start_square, end_square)
+        piece = self.board.piece_at(start_square)
+
+        if piece.piece_type == chess.PAWN:
+            direction = 1 if piece.color == chess.WHITE else -1
+            start_rank = chess.square_rank(start_square)
+            end_rank = chess.square_rank(end_square)
+            start_file = chess.square_file(start_square)
+            end_file = chess.square_file(end_square)
+
+            # Check for normal one-square move
+            if end_rank == start_rank + direction and start_file == end_file:
+                return move in self.board.legal_moves
+
+            # Check for two-square move
+            if end_rank == start_rank + 2 * direction and start_file == end_file:
+                return move in self.board.legal_moves
+
+            # Check for diagonal capture
+            if end_rank == start_rank + direction and abs(end_file - start_file) == 1:
+                return move in self.board.legal_moves
+
         is_valid = move in self.board.legal_moves
         print(f"Move validity for {start_pos} to {end_pos}: {is_valid}")  # Debugging
         return is_valid

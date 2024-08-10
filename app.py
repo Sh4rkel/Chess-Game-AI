@@ -27,9 +27,13 @@ def move():
         start_pos = data.get('start_pos')
         end_pos = data.get('end_pos')
         print(f"Received move request: {start_pos} to {end_pos}")  # Debugging
+
+        # Check if the move is valid
         if game.is_valid_move(start_pos, end_pos):
+            print(f"Move from {start_pos} to {end_pos} is valid")  # Debugging
             game.play_turn(start_pos, end_pos)
-            return jsonify({'status': 'success', 'board': game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')})
+            board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
+            return jsonify({'status': 'success', 'board': board_html})
         else:
             error_message = f"Invalid move from {start_pos} to {end_pos}"
             print(error_message)  # Debugging

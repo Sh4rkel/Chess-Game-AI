@@ -34,6 +34,37 @@ class Board:
             return False
 
         move = chess.Move(start_square, end_square)
+        piece = self.board.piece_at(start_square)
+
+        if piece.piece_type == chess.PAWN:
+            # Check if the pawn is making a valid move
+            direction = 1 if piece.color == chess.WHITE else -1
+            start_rank = chess.square_rank(start_square)
+            end_rank = chess.square_rank(end_square)
+            start_file = chess.square_file(start_square)
+            end_file = chess.square_file(end_square)
+
+            if start_file == end_file:
+                # Moving forward
+                if (end_rank - start_rank) == direction:
+                    # Single step move
+                    if self.board.piece_at(end_square) is None:
+                        return True
+                elif (end_rank - start_rank) == 2 * direction:
+                    # Double step move from initial position
+                    if (start_rank == 1 and piece.color == chess.WHITE) or (
+                            start_rank == 6 and piece.color == chess.BLACK):
+                        if self.board.piece_at(end_square) is None and self.board.piece_at(
+                                start_square + direction * 8) is None:
+                            return True
+            elif abs(start_file - end_file) == 1 and (end_rank - start_rank) == direction:
+                # Capturing move
+                if self.board.piece_at(end_square) is not None and self.board.piece_at(end_square).color != piece.color:
+                    return True
+
+            print(f"Invalid pawn move from {start_pos} to {end_pos}")  # Debugging
+            return False
+
         is_valid = move in self.board.legal_moves
         print(f"Move validity for {start_pos} to {end_pos}: {is_valid}")  # Debugging
         return is_valid

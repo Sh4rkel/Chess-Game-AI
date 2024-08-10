@@ -21,6 +21,8 @@ class Board:
                 print(f"Captured piece: {captured_piece}")  # Debugging
             self.board.push(move)
             print(f"Move {move} executed")  # Debugging
+            print(f"Board state after move:\n{self.board}")  # Debugging
+            print(f"Legal moves after move: {list(self.board.legal_moves)}")  # Debugging
         else:
             print(f"Move {move} is illegal")  # Debugging
             raise ValueError("Invalid move")
@@ -49,18 +51,18 @@ class Board:
                 if (end_rank - start_rank) == direction:
                     # Single step move
                     if self.board.piece_at(end_square) is None:
-                        return True
+                        return move in self.board.legal_moves
                 elif (end_rank - start_rank) == 2 * direction:
                     # Double step move from initial position
                     if (start_rank == 1 and piece.color == chess.WHITE) or (
                             start_rank == 6 and piece.color == chess.BLACK):
                         if self.board.piece_at(end_square) is None and self.board.piece_at(
                                 start_square + direction * 8) is None:
-                            return True
+                            return move in self.board.legal_moves
             elif abs(start_file - end_file) == 1 and (end_rank - start_rank) == direction:
                 # Capturing move
                 if self.board.piece_at(end_square) is not None and self.board.piece_at(end_square).color != piece.color:
-                    return True
+                    return move in self.board.legal_moves
 
             print(f"Invalid pawn move from {start_pos} to {end_pos}")  # Debugging
             return False

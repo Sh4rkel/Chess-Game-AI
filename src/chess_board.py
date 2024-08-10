@@ -1,9 +1,9 @@
 # src/chess_board.py
-import chess # https://python-chess.readthedocs.io/en/latest/index.html
+import chess
 
 class Board:
     def __init__(self):
-        self.board = chess.Board() # initialize the chess board using the Board class from the python-chess library
+        self.board = chess.Board()
 
     def move_piece(self, start_pos, end_pos):
         print(f"Moving piece from {start_pos} to {end_pos}")  # Debugging
@@ -15,35 +15,6 @@ class Board:
             raise ValueError("Invalid square")
 
         move = chess.Move(start_square, end_square)
-        piece = self.board.piece_at(start_square)
-
-        if piece.piece_type == chess.PAWN:
-            direction = 1 if piece.color == chess.WHITE else -1
-            start_rank = chess.square_rank(start_square)
-            end_rank = chess.square_rank(end_square)
-            start_file = chess.square_file(start_square)
-            end_file = chess.square_file(end_square)
-
-            # Check for normal one-square move
-            if end_rank == start_rank + direction and start_file == end_file:
-                if move in self.board.legal_moves:
-                    self.board.push(move)
-                    print(f"Move {move} executed")  # Debugging
-                    return
-
-            # Check for two-square move
-            if end_rank == start_rank + 2 * direction and start_file == end_file:
-                if move in self.board.legal_moves:
-                    self.board.push(move)
-                    print(f"Move {move} executed")  # Debugging
-                    return
-
-            # Check for diagonal capture
-            if end_rank == start_rank + direction and abs(end_file - start_file) == 1:
-                if move in self.board.legal_moves:
-                    self.board.push(move)
-                    print(f"Move {move} executed")  # Debugging
-                    return
 
         if move in self.board.legal_moves:
             captured_piece = self.board.piece_at(end_square)
@@ -64,52 +35,12 @@ class Board:
             return False
 
         move = chess.Move(start_square, end_square)
-        piece = self.board.piece_at(start_square)
-
-        if piece.piece_type == chess.PAWN:
-            direction = 1 if piece.color == chess.WHITE else -1
-            start_rank = chess.square_rank(start_square)
-            end_rank = chess.square_rank(end_square)
-            start_file = chess.square_file(start_square)
-            end_file = chess.square_file(end_square)
-
-            # Check for normal one-square move
-            if end_rank == start_rank + direction and start_file == end_file:
-                return move in self.board.legal_moves
-
-            # Check for two-square move
-            if end_rank == start_rank + 2 * direction and start_file == end_file:
-                return move in self.board.legal_moves
-
-            # Check for diagonal capture
-            if end_rank == start_rank + direction and abs(end_file - start_file) == 1:
-                return move in self.board.legal_moves
-
         is_valid = move in self.board.legal_moves
         print(f"Move validity for {start_pos} to {end_pos}: {is_valid}")  # Debugging
         return is_valid
 
-    def is_valid_move(self, start_pos, end_pos):
-        try:
-            if not self.is_valid_square(start_pos) or not self.is_valid_square(end_pos):
-                error_message = f"Invalid square: {start_pos} or {end_pos}"
-                print(error_message)  # Debugging
-                return False
-            piece = self.board.board.piece_at(chess.parse_square(start_pos))
-            if piece is None:
-                error_message = f"No piece at start position: {start_pos}"
-                print(error_message)  # Debugging
-                return False
-            if piece.color == self.current_turn:
-                is_valid = self.board.is_valid_piece_move(start_pos, end_pos)
-                print(f"Move validity for {start_pos} to {end_pos}: {is_valid}")  # Debugging
-                return is_valid
-            error_message = f"Piece color does not match current turn: {piece.color} vs {self.current_turn}"
-            print(error_message)  # Debugging
-            return False
-        except Exception as e:
-            print(f"Error validating move: {e}")  # Debugging
-            return False
+    def is_valid_square(self, square):
+        return square in chess.SQUARE_NAMES
 
     def is_checkmate(self):
         return self.board.is_checkmate()

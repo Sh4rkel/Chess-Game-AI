@@ -1,5 +1,5 @@
 # src/chess_game.py
-import chess # https://python-chess.readthedocs.io/en/latest/index.html
+import chess
 from src.chess_board import Board
 
 class ChessGame:
@@ -18,7 +18,7 @@ class ChessGame:
 
     def is_valid_move(self, start_pos, end_pos):
         try:
-            if not self.is_valid_square(start_pos) or not self.is_valid_square(end_pos):
+            if not self.board.is_valid_square(start_pos) or not self.board.is_valid_square(end_pos):
                 error_message = f"Invalid square: {start_pos} or {end_pos}"
                 print(error_message)  # Debugging
                 return False
@@ -37,9 +37,6 @@ class ChessGame:
         except Exception as e:
             print(f"Error validating move: {e}")  # Debugging
             return False
-
-    def is_valid_square(self, square):
-        return square in chess.SQUARE_NAMES
 
     def switch_turn(self):
         self.current_turn = chess.BLACK if self.current_turn == chess.WHITE else chess.WHITE

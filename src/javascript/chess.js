@@ -39,9 +39,9 @@ function drop(ev) {
         const start_notation = start_file + start_rank;
         const end_notation = end_file + end_rank;
 
-        console.log(`Dragging piece from ${start_notation}`); // Just debugging log, it will be removed when the app is finished
-        console.log(`Dropping piece to ${end_notation}`); // same as the upper log
-        console.log(`Moving piece from ${start_notation} to ${end_notation}`); // idk, I put it for some cases
+        console.log(`Dragging piece from ${start_notation}`);
+        console.log(`Dropping piece to ${end_notation}`);
+        console.log(`Moving piece from ${start_notation} to ${end_notation}`);
         fetch('/move', {
             method: 'POST',
             headers: {
@@ -61,9 +61,9 @@ function drop(ev) {
         }).catch(error => {
             console.error('Fetch error:', error);
         });
-        console.log('Move request sent'); // debugging log, nothing important
+        console.log('Move request sent');
     } else {
-        console.log('Invalid move: target cell is not empty or wrong turn'); // debugging log, sometimes it's useful
+        console.log('Invalid move: target cell is not empty or wrong turn');
     }
-    console.log('Piece dropped'); // just kidding, it's a debugging log
+    console.log('Piece dropped');
 }

@@ -22,8 +22,8 @@ function drop(ev) {
     console.log(`Piece color: ${pieceColor}, Current turn: ${current_turn}, Chi: ${target.children.length}`);
 
     // Check if the target cell is empty or contains an opponent's piece
-    if ((target.children.length === 0 || (target.children.length > 0 && target.children[0].alt.toUpperCase() !== piece.alt.toUpperCase())) && pieceColor === current_turn) {
-        if (target.children.length > 0) {
+    if ((target.children.length !== current_turn || (target.children.length > 0 && target.children[0].alt.toUpperCase() !== piece.alt.toUpperCase())) && pieceColor === current_turn) {
+        if (target.children.length > 0 && target.children[0].alt.toUpperCase() !== piece.alt.toUpperCase() && target.children.length !== current_turn) {
             target.innerHTML = ''; // Remove the captured piece
         }
         target.appendChild(piece);

@@ -26,16 +26,16 @@ def move():
         data = request.get_json()
         start_pos = data.get('start_pos')
         end_pos = data.get('end_pos')
-        print(f"Received move request: {start_pos} to {end_pos}")  # Debugging (useless until now)
+        print(f"Received move request: {start_pos} to {end_pos}")  # Debugging
         if game.is_valid_move(start_pos, end_pos):
             game.play_turn(start_pos, end_pos)
             return jsonify({'status': 'success', 'board': game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')})
         else:
             error_message = f"Invalid move from {start_pos} to {end_pos}"
-            print(error_message)  # Debugging (useless until now)
+            print(error_message)  # Debugging
             return jsonify({'status': 'error', 'message': error_message})
     except Exception as e:
-        print(f"Error processing move: {e}")  # Debugging (useless until now)
+        print(f"Error processing move: {e}")  # Debugging
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/status', methods=['GET'])

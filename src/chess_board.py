@@ -1,4 +1,3 @@
-# src/chess_board.py
 import chess
 
 class Board:

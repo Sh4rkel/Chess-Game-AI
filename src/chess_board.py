@@ -4,27 +4,27 @@ class Board:
     def __init__(self):
         self.board = chess.Board()
 
-    def move_piece(self, start_pos, end_pos):
-        print(f"Moving piece from {start_pos} to {end_pos}")  # Debugging
+    def move_piece(self, start_pos, end_pos, promotion_piece=chess.QUEEN):
+        print(f"Moving piece from {start_pos} to {end_pos}")
         try:
             start_square = chess.parse_square(start_pos)
             end_square = chess.parse_square(end_pos)
         except ValueError:
-            print(f"Invalid square: {start_pos} or {end_pos}")  # Debugging
+            print(f"Invalid square: {start_pos} or {end_pos}")
             raise ValueError("Invalid square")
 
-        move = chess.Move(start_square, end_square)
+        move = chess.Move(start_square, end_square, promotion=promotion_piece)
 
         if move in self.board.legal_moves:
             captured_piece = self.board.piece_at(end_square)
             if captured_piece:
-                print(f"Captured piece: {captured_piece}")  # Debugging
+                print(f"Captured piece: {captured_piece}")
             self.board.push(move)
-            print(f"Move {move} executed")  # Debugging
-            print(f"Board state after move:\n{self.board}")  # Debugging
-            print(f"Legal moves after move: {list(self.board.legal_moves)}")  # Debugging
+            print(f"Move {move} executed")
+            print(f"Board state after move:\n{self.board}")
+            print(f"Legal moves after move: {list(self.board.legal_moves)}")
         else:
-            print(f"Move {move} is illegal")  # Debugging
+            print(f"Move {move} is illegal")
             raise ValueError("Invalid move")
 
     def is_valid_piece_move(self, start_pos, end_pos):
@@ -124,6 +124,8 @@ class Board:
 
         <input type="hidden" id="current_turn" value="{current_turn}">
         <script src="/src/javascript/chess.js"></script>
+
+        <button onclick="resetGame()">Reset Game</button>
 
         <table class="chess-board">
         """

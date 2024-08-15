@@ -20,29 +20,26 @@ def index():
         print(f"Error rendering index: {e}")  # Debugging (useless until now)
         return "Internal Server Error", 500
 
-# app.py
 @app.route('/move', methods=['POST'])
 def move():
     try:
         data = request.get_json()
         start_pos = data.get('start_pos')
         end_pos = data.get('end_pos')
-        promotion_piece = data.get('promotion_piece', 'q')
-        promotion_piece_map = {
-            'q': chess.QUEEN,
-            'r': chess.ROOK,
-            'b': chess.BISHOP,
-            'n': chess.KNIGHT
-        }
-        promotion_piece = promotion_piece_map.get(promotion_piece, chess.QUEEN)
+        print(f"Received move request: {start_pos} to {end_pos}")  # Debugging
 
+        # Check if the move is valid
         if game.is_valid_move(start_pos, end_pos):
-            game.play_turn(start_pos, end_pos, promotion_piece)
+            print(f"Move from {start_pos} to {end_pos} is valid")  # Debugging
+            game.play_turn(start_pos, end_pos)
             board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
             return jsonify({'status': 'success', 'board': board_html})
         else:
-            return jsonify({'status': 'error', 'message': f"Invalid move from {start_pos} to {end_pos}"})
+            error_message = f"Invalid move from {start_pos} to {end_pos}"
+            print(error_message)  # Debugging
+            return jsonify({'status': 'error', 'message': error_message})
     except Exception as e:
+        print(f"Error processing move: {e}")  # Debugging
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/status', methods=['GET'])
@@ -56,16 +53,6 @@ def status():
 @app.route('/src/javascript/<path:filename>')
 def serve_js(filename):
     return send_from_directory('src/javascript', filename)
-
-@app.route('/reset', methods=['POST'])
-def reset():
-    try:
-        game.reset()
-        board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
-        return jsonify({'status': 'success', 'board': board_html})
-    except Exception as e:
-        print(f"Error resetting game: {e}")  # Debugging
-        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()

@@ -11,7 +11,12 @@ class Board:
         except ValueError:
             raise ValueError("Invalid square")
 
-        move = chess.Move(start_square, end_square, promotion=chess.Piece.from_symbol(promotion).piece_type if promotion else None)
+        if promotion:
+            promotion_piece = chess.Piece.from_symbol(promotion).piece_type
+        else:
+            promotion_piece = None
+
+        move = chess.Move(start_square, end_square, promotion=promotion_piece)
         if move in self.board.legal_moves:
             self.board.push(move)
         else:

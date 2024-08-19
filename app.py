@@ -40,6 +40,15 @@ def status():
         print(f"Error fetching status: {e}")
         return "Internal Server Error", 500
 
+@app.route('/captured_pieces', methods=['GET'])
+def captured_pieces():
+    try:
+        pieces = game.get_captured_pieces()
+        return jsonify({'captured_pieces': pieces})
+    except Exception as e:
+        print(f"Error fetching captured pieces: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/src/javascript/<path:filename>')
 def serve_js(filename):
     return send_from_directory('src/javascript', filename)

@@ -3,6 +3,7 @@ import chess
 class Board:
     def __init__(self):
         self.board = chess.Board()
+        self.captured_pieces = []
 
     def move_piece(self, start_pos, end_pos, promotion=None):
         try:
@@ -18,6 +19,9 @@ class Board:
 
         move = chess.Move(start_square, end_square, promotion=promotion_piece)
         if move in self.board.legal_moves:
+            if self.board.is_capture(move):
+                captured_piece = self.board.piece_at(end_square)
+                self.captured_pieces.append(captured_piece.symbol())
             self.board.push(move)
         else:
             raise ValueError("Invalid move")
@@ -102,3 +106,6 @@ class Board:
             html += '</tr>'
         html += '</table>'
         return html
+
+    def get_captured_pieces(self):
+        return self.captured_pieces

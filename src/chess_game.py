@@ -36,3 +36,6 @@ class ChessGame:
     def reset(self):
         self.board = Board()
         self.current_turn = chess.WHITE
+
+    def get_captured_pieces(self):
+        return self.board.get_captured_pieces()

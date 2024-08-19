@@ -6,12 +6,12 @@ class ChessGame:
         self.board = Board()
         self.current_turn = chess.WHITE
 
-    def play_turn(self, start_pos, end_pos):
+    def play_turn(self, start_pos, end_pos, promotion=None):
         try:
-            self.board.move_piece(start_pos, end_pos)
+            self.board.move_piece(start_pos, end_pos, promotion)
             self.switch_turn()
         except ValueError as e:
-            raise
+            raise ValueError(str(e))
 
     def is_valid_move(self, start_pos, end_pos):
         try:

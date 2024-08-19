@@ -4,14 +4,14 @@ class Board:
     def __init__(self):
         self.board = chess.Board()
 
-    def move_piece(self, start_pos, end_pos):
+    def move_piece(self, start_pos, end_pos, promotion=None):
         try:
             start_square = chess.parse_square(start_pos)
             end_square = chess.parse_square(end_pos)
         except ValueError:
             raise ValueError("Invalid square")
 
-        move = chess.Move(start_square, end_square)
+        move = chess.Move(start_square, end_square, promotion=chess.Piece.from_symbol(promotion).piece_type if promotion else None)
         if move in self.board.legal_moves:
             self.board.push(move)
         else:

@@ -20,9 +20,10 @@ def move():
         data = request.get_json()
         start_pos = data.get('start_pos')
         end_pos = data.get('end_pos')
+        promotion = data.get('promotion')
 
         if game.is_valid_move(start_pos, end_pos):
-            game.play_turn(start_pos, end_pos)
+            game.play_turn(start_pos, end_pos, promotion)
             board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
             return jsonify({'status': 'success', 'board': board_html})
         else:

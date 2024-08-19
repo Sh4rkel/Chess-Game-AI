@@ -1,4 +1,3 @@
-// javascript functionality for the chess game
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -28,12 +27,17 @@ function drop(ev) {
     const start_notation = start_file + start_rank;
     const end_notation = end_file + end_rank;
 
+    let promotion = null;
+    if ((piece.alt === 'P' && end_rank === '8') || (piece.alt === 'p' && end_rank === '1')) {
+        promotion = prompt("Promote to (q, r, b, n):", "q");
+    }
+
     fetch('/move', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({start_pos: start_notation, end_pos: end_notation})
+        body: JSON.stringify({start_pos: start_notation, end_pos: end_notation, promotion: promotion})
     }).then(response => response.json()).then(data => {
         if (data.status === 'error') {
             alert(data.message);

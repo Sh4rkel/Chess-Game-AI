@@ -1,13 +1,7 @@
-from flask import Flask, request, jsonify, send_from_directory # https://flask.palletsprojects.com/en/3.0.x/quickstart/#static-files
-import chess # https://python-chess.readthedocs.io/en/latest/index.html
+from flask import Flask, request, jsonify, send_from_directory
+import chess
 from src.chess_game import ChessGame
-"""
 
-Simple Flask server to host the chess game,
-I want to remake it in the future when I finish to implement
-a reinforcement learning model to play against the AI.
-
-"""
 app = Flask(__name__)
 game = ChessGame()
 
@@ -17,7 +11,7 @@ def index():
         board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
         return f'<h1>Welcome to the Chess Game!</h1>{board_html}'
     except Exception as e:
-        print(f"Error rendering index: {e}")  # Debugging (useless until now)
+        print(f"Error rendering index: {e}")
         return "Internal Server Error", 500
 
 @app.route('/move', methods=['POST'])
@@ -26,20 +20,15 @@ def move():
         data = request.get_json()
         start_pos = data.get('start_pos')
         end_pos = data.get('end_pos')
-        print(f"Received move request: {start_pos} to {end_pos}")  # Debugging
 
-        # Check if the move is valid
         if game.is_valid_move(start_pos, end_pos):
-            print(f"Move from {start_pos} to {end_pos} is valid")  # Debugging
             game.play_turn(start_pos, end_pos)
             board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
             return jsonify({'status': 'success', 'board': board_html})
         else:
-            error_message = f"Invalid move from {start_pos} to {end_pos}"
-            print(error_message)  # Debugging
-            return jsonify({'status': 'error', 'message': error_message})
+            return jsonify({'status': 'error', 'message': 'Invalid move'})
     except Exception as e:
-        print(f"Error processing move: {e}")  # Debugging
+        print(f"Error processing move: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/status', methods=['GET'])
@@ -47,7 +36,7 @@ def status():
     try:
         return jsonify({'game_over': game.is_game_over(), 'current_turn': 'white' if game.current_turn == chess.WHITE else 'black'})
     except Exception as e:
-        print(f"Error fetching status: {e}")  # Debugging (useless until now)
+        print(f"Error fetching status: {e}")
         return "Internal Server Error", 500
 
 @app.route('/src/javascript/<path:filename>')

@@ -5,23 +5,15 @@ class Board:
         self.board = chess.Board()
 
     def move_piece(self, start_pos, end_pos):
-        print(f"Moving piece from {start_pos} to {end_pos}")
         try:
             start_square = chess.parse_square(start_pos)
             end_square = chess.parse_square(end_pos)
         except ValueError:
-            print(f"Invalid square: {start_pos} or {end_pos}")
             raise ValueError("Invalid square")
 
         move = chess.Move(start_square, end_square)
-        print(f"Generated move: {move}")
-
         if move in self.board.legal_moves:
-            captured_piece = self.board.piece_at(end_square)
-            if captured_piece:
-                print(f"Captured piece: {captured_piece}")
             self.board.push(move)
-            return captured_piece
         else:
             raise ValueError("Invalid move")
 
@@ -30,39 +22,10 @@ class Board:
             start_square = chess.parse_square(start_pos)
             end_square = chess.parse_square(end_pos)
         except ValueError:
-            print(f"Invalid square: {start_pos} or {end_pos}")
             return False
 
         move = chess.Move(start_square, end_square)
-        piece = self.board.piece_at(start_square)
-
-        if piece.piece_type == chess.PAWN:
-            direction = 1 if piece.color == chess.WHITE else -1
-            start_rank = chess.square_rank(start_square)
-            end_rank = chess.square_rank(end_square)
-            start_file = chess.square_file(start_square)
-            end_file = chess.square_file(end_square)
-
-            if start_file == end_file:
-                if (end_rank - start_rank) == direction:
-                    if self.board.piece_at(end_square) is None:
-                        return move in self.board.legal_moves
-                elif (end_rank - start_rank) == 2 * direction:
-                    if (start_rank == 1 and piece.color == chess.WHITE) or (
-                            start_rank == 6 and piece.color == chess.BLACK):
-                        if self.board.piece_at(end_square) is None and self.board.piece_at(
-                                start_square + direction * 8) is None:
-                            return move in self.board.legal_moves
-            elif abs(start_file - end_file) == 1 and (end_rank - start_rank) == direction:
-                if self.board.piece_at(end_square) is not None and self.board.piece_at(end_square).color != piece.color:
-                    return move in self.board.legal_moves
-
-            print(f"Invalid pawn move from {start_pos} to {end_pos}")  # Debugging
-            return False
-
-        is_valid = move in self.board.legal_moves
-        print(f"Move validity for {start_pos} to {end_pos}: {is_valid}")  # Debugging
-        return is_valid
+        return move in self.board.legal_moves
 
     def is_valid_square(self, square):
         return square in chess.SQUARE_NAMES

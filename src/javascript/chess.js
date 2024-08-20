@@ -26,6 +26,21 @@ function resetGame() {
     whiteTimer = 300;
     blackTimer = 300;
     currentPlayer = 'white';
+
+    fetch('/reset', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json()).then(data => {
+        if (data.status === 'success') {
+            document.body.innerHTML = data.board;
+        } else {
+            alert(data.message);
+        }
+    }).catch(error => {
+        console.error('Fetch error:', error);
+    });
 }
 
 function formatTime(seconds) {

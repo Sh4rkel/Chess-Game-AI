@@ -58,6 +58,16 @@ def reset_timers():
         print(f"Error resetting timers: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/reset', methods=['POST'])
+def reset():
+    try:
+        game.reset()
+        board_html = game.board.board_to_html('white')
+        return jsonify({'status': 'success', 'board': board_html})
+    except Exception as e:
+        print(f"Error resetting game: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/src/javascript/<path:filename>')
 def serve_js(filename):
     return send_from_directory('src/javascript', filename)

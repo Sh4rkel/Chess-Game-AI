@@ -12,7 +12,6 @@ class ChessGame:
         try:
             self.board.move_piece(start_pos, end_pos, promotion)
             self.switch_turn()
-            self.reset_timers()
         except ValueError as e:
             raise ValueError(str(e))
 

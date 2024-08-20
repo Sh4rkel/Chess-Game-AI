@@ -28,13 +28,6 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function resetTimers() {
-    whiteTimer = 300;
-    blackTimer = 300;
-    document.getElementById('white-timer').innerText = formatTime(whiteTimer);
-    document.getElementById('black-timer').innerText = formatTime(blackTimer);
-}
-
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -86,7 +79,6 @@ function drop(ev) {
                 } else {
                     document.body.innerHTML = data.board;
                     currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
-                    resetTimers();
                 }
             }).catch(error => {
                 console.error('Fetch error:', error);

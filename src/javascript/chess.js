@@ -1,5 +1,5 @@
-let whiteTimer = 300; // 5 minutes
-let blackTimer = 300; // 5 minutes
+let whiteTimer = 300;
+let blackTimer = 300;
 let currentPlayer = 'white';
 
 function startTimer() {
@@ -20,6 +20,12 @@ function startTimer() {
             }
         }
     }, 1000);
+}
+
+function resetGame() {
+    whiteTimer = 300;
+    blackTimer = 300;
+    currentPlayer = 'white';
 }
 
 function formatTime(seconds) {

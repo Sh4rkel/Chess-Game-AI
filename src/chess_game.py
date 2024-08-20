@@ -5,11 +5,14 @@ class ChessGame:
     def __init__(self):
         self.board = Board()
         self.current_turn = chess.WHITE
+        self.white_timer = 300
+        self.black_timer = 300
 
     def play_turn(self, start_pos, end_pos, promotion=None):
         try:
             self.board.move_piece(start_pos, end_pos, promotion)
             self.switch_turn()
+            self.reset_timers()
         except ValueError as e:
             raise ValueError(str(e))
 
@@ -36,6 +39,11 @@ class ChessGame:
     def reset(self):
         self.board = Board()
         self.current_turn = chess.WHITE
+        self.reset_timers()
+
+    def reset_timers(self):
+        self.white_timer = 300
+        self.black_timer = 300
 
     def get_captured_pieces(self):
         return self.board.get_captured_pieces()

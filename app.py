@@ -49,6 +49,15 @@ def captured_pieces():
         print(f"Error fetching captured pieces: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/reset_timers', methods=['POST'])
+def reset_timers():
+    try:
+        game.reset_timers()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        print(f"Error resetting timers: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 @app.route('/src/javascript/<path:filename>')
 def serve_js(filename):
     return send_from_directory('src/javascript', filename)

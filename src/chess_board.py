@@ -86,7 +86,10 @@ class Board:
                 background-color: #b58863;
             }}
         </style>
-
+        <div>
+            <span>White Timer: <span id="white-timer">5:00</span></span>
+            <span>Black Timer: <span id="black-timer">5:00</span></span>
+        </div>
         <input type="hidden" id="current_turn" value="{current_turn}">
         <script src="/src/javascript/chess.js"></script>
 

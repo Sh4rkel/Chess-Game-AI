@@ -1,3 +1,40 @@
+let whiteTimer = 300; // 5 minutes
+let blackTimer = 300; // 5 minutes
+let currentPlayer = 'white';
+
+function startTimer() {
+    setInterval(() => {
+        if (currentPlayer === 'white') {
+            whiteTimer--;
+            document.getElementById('white-timer').innerText = formatTime(whiteTimer);
+            if (whiteTimer <= 0) {
+                alert('Black wins!');
+                resetGame();
+            }
+        } else {
+            blackTimer--;
+            document.getElementById('black-timer').innerText = formatTime(blackTimer);
+            if (blackTimer <= 0) {
+                alert('White wins!');
+                resetGame();
+            }
+        }
+    }, 1000);
+}
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+function resetTimers() {
+    whiteTimer = 300;
+    blackTimer = 300;
+    document.getElementById('white-timer').innerText = formatTime(whiteTimer);
+    document.getElementById('black-timer').innerText = formatTime(blackTimer);
+}
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -48,9 +85,15 @@ function drop(ev) {
                     alert(data.message);
                 } else {
                     document.body.innerHTML = data.board;
+                    currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
+                    resetTimers();
                 }
             }).catch(error => {
                 console.error('Fetch error:', error);
             });
         });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    startTimer();
+});

@@ -1,3 +1,4 @@
+# integrate_model.py
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
@@ -5,7 +6,6 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from src.data_collection import collect_game_data
 from src.chess_game import ChessGame
-
 
 def preprocess_data(game_data):
     board_fen = game_data['board']
@@ -18,7 +18,6 @@ def preprocess_data(game_data):
     features = np.array([current_turn, white_timer, black_timer, captured_pieces, move_history])
     return features
 
-
 def create_model(input_shape):
     model = Sequential([
         Dense(128, input_shape=(input_shape,), activation='relu'),
@@ -29,7 +28,6 @@ def create_model(input_shape):
     ])
     model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy'])
     return model
-
 
 def train_model(game_data_list):
     X = np.array([preprocess_data(data) for data in game_data_list])
@@ -42,7 +40,6 @@ def train_model(game_data_list):
     model.save('chess_model.h5')
 
     return model
-
 
 if __name__ == '__main__':
     game = ChessGame()

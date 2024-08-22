@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import chess
 from src.chess_game import ChessGame
-from src.data_colection import collect_game_data
+from src.data_collection import collect_game_data
 app = Flask(__name__)
 game = ChessGame()
 

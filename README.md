@@ -42,7 +42,7 @@ This is a web-based chess game application that allows users to play chess, trac
 ![Move History](static/images/gameplay/chess-game.png)
 
 ### Captured Pieces
-![Captured Pieces](static/images/gameplay/chess-capture.png)
+![Captured Pieces](static/images/gameplay/chess_capture.png)
 
 ## API Endpoints
 

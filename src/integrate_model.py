@@ -38,10 +38,12 @@ def train_model(game_data_list):
 
     model.fit(X, y, epochs=10, batch_size=32, validation_split=0.2)
 
-    if not os.path.exists('models'):
-        os.makedirs('models')
+    project_dir = os.path.abspath(os.path.dirname(__file__))
+    models_dir = os.path.join(project_dir, 'models')
+    if not os.path.exists(models_dir):
+        os.makedirs(models_dir)
 
-    model_path = 'models/chess_model.h5'
+    model_path = os.path.join(models_dir, 'chess_model.h5')
     model.save(model_path)
     print(f"Model saved to {model_path}")
 

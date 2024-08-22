@@ -6,6 +6,7 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from src.data_collection import collect_game_data
 from src.chess_game import ChessGame
+import os
 
 def preprocess_data(game_data):
     board_fen = game_data['board']
@@ -37,7 +38,12 @@ def train_model(game_data_list):
 
     model.fit(X, y, epochs=10, batch_size=32, validation_split=0.2)
 
-    model.save('chess_model.h5')
+    if not os.path.exists('models'):
+        os.makedirs('models')
+
+    model_path = 'models/chess_model.h5'
+    model.save(model_path)
+    print(f"Model saved to {model_path}")
 
     return model
 

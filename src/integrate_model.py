@@ -45,7 +45,6 @@ def train_model(game_data_list):
 
     model_path = os.path.join(models_dir, 'chess_model.h5')
     model.save(model_path)
-    print(f"Model saved to {model_path}")
 
     return model
 

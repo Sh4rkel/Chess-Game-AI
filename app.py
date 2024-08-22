@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import chess
 from src.chess_game import ChessGame
-
+from src.data_colection import collect_game_data
 app = Flask(__name__)
 game = ChessGame()
 
@@ -71,6 +71,15 @@ def reset():
 @app.route('/src/javascript/<path:filename>')
 def serve_js(filename):
     return send_from_directory('src/javascript', filename)
+
+@app.route('/game_data', methods=['GET'])
+def game_data():
+    try:
+        data = collect_game_data(game)
+        return jsonify(data)
+    except Exception as e:
+        print(f"Error collecting game data: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     app.run()

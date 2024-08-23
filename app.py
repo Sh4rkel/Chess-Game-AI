@@ -25,7 +25,8 @@ def move():
         if game.is_valid_move(start_pos, end_pos):
             game.play_turn(start_pos, end_pos, promotion)
             board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
-            return jsonify({'status': 'success', 'board': board_html})
+            move_notation = f"{start_pos} to {end_pos}"
+            return jsonify({'status': 'success', 'board': board_html, 'move': move_notation})
         else:
             return jsonify({'status': 'error', 'message': 'Invalid move'})
     except Exception as e:

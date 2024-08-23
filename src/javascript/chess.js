@@ -57,6 +57,13 @@ function drag(ev) {
     ev.dataTransfer.setData('text', ev.target.id);
 }
 
+function updateMoveList(move) {
+    const moveList = document.getElementById('move-list');
+    const moveItem = document.createElement('li');
+    moveItem.textContent = move;
+    moveList.appendChild(moveItem);
+}
+
 function drop(ev) {
     ev.preventDefault();
     const data = ev.dataTransfer.getData('text');
@@ -100,6 +107,7 @@ function drop(ev) {
                 } else {
                     document.body.innerHTML = data.board;
                     currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
+                    updateMoveList(`${start_notation} to ${end_notation}`);
                 }
             }).catch(error => {
                 console.error('Fetch error:', error);

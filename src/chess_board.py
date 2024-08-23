@@ -85,15 +85,23 @@ class Board:
             table.chess-board .black {{
                 background-color: #b58863;
             }}
+            .game-container {{
+                display: flex;
+            }}
+            .move-list {{
+                margin-left: 20px;
+                width: 200px;
+            }}
         </style>
-        <div>
-            <span>White Timer: <span id="white-timer">5:00</span></span>
-            <span>Black Timer: <span id="black-timer">5:00</span></span>
-        </div>
-        <input type="hidden" id="current_turn" value="{current_turn}">
-        <script src="/src/javascript/chess.js"></script>
+        <div class="game-container">
+            <div>
+                <span>White Timer: <span id="white-timer">5:00</span></span>
+                <span>Black Timer: <span id="black-timer">5:00</span></span>
+            </div>
+            <input type="hidden" id="current_turn" value="{current_turn}">
+            <script src="/src/javascript/chess.js"></script>
 
-        <table class="chess-board">
+            <table class="chess-board">
         """
         for i, row in enumerate(rows):
             html += '<tr>'
@@ -108,6 +116,14 @@ class Board:
                     html += f'<td id="{cell_id}" class="{color}" ondrop="drop(event)" ondragover="allowDrop(event)"><img id="{piece_id}" src="/static/images/chess_pieces/{piece_svg}" alt="{cell}" width="60" height="60" draggable="true" ondragstart="drag(event)"></td>'
             html += '</tr>'
         html += '</table>'
+        html += """
+            </div>
+            <div class="move-list">
+                <h3>Move List</h3>
+                <ul id="move-list"></ul>
+            </div>
+        </div>
+        """
         return html
 
     def get_captured_pieces(self):

@@ -68,40 +68,83 @@ class Board:
         rows = board_str.split('\n')
         html = f"""
         <style>
-            table.chess-board {{
+            body {{
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }}
+            .container {{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }}
+            .game-container {{
+                display: flex;
+                margin-top: 20px;
+            }}
+            .chess-board {{
                 border-collapse: collapse;
                 border: 2px solid #333;
             }}
-            table.chess-board td {{
+            .chess-board td {{
                 width: 6rem;
                 height: 6rem;
                 text-align: center;
                 vertical-align: middle;
                 font-size: 2.4rem;
             }}
-            table.chess-board .white {{
+            .chess-board .white {{
                 background-color: #f0d9b5;
             }}
-            table.chess-board .black {{
+            .chess-board .black {{
                 background-color: #b58863;
-            }}
-            .game-container {{
-                display: flex;
             }}
             .move-list {{
                 margin-left: 20px;
                 width: 200px;
             }}
+            .move-list h3 {{
+                margin-top: 0;
+            }}
+            .move-list ul {{
+                list-style-type: none;
+                padding: 0;
+            }}
+            .move-list li {{
+                background-color: #eee;
+                margin: 5px 0;
+                padding: 5px;
+                border-radius: 5px;
+            }}
+            .timers {{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }}
+            .timers span {{
+                font-size: 1.2rem;
+                margin: 0 10px;
+            }}
         </style>
-        <div class="game-container">
-            <div>
+        <div class="container">
+            <h1>Welcome to the Chess Game!</h1>
+            <div class="timers">
                 <span>White Timer: <span id="white-timer">5:00</span></span>
                 <span>Black Timer: <span id="black-timer">5:00</span></span>
             </div>
             <input type="hidden" id="current_turn" value="{current_turn}">
             <script src="/src/javascript/chess.js"></script>
-
-            <table class="chess-board">
+            <div class="game-container">
+                <table class="chess-board">
         """
         for i, row in enumerate(rows):
             html += '<tr>'
@@ -117,10 +160,10 @@ class Board:
             html += '</tr>'
         html += '</table>'
         html += """
-            </div>
-            <div class="move-list">
-                <h3>Move List</h3>
-                <ul id="move-list"></ul>
+                <div class="move-list">
+                    <h3>Move List</h3>
+                    <ul id="move-list"></ul>
+                </div>
             </div>
         </div>
         """

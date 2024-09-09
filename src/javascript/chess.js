@@ -73,7 +73,7 @@ function requestAIMove() {
     }).then(response => response.json()).then(data => {
         if (data.status === 'success') {
             document.getElementById('chess-board-container').innerHTML = data.board;
-            currentPlayer = 'white';  // Switch back to human player
+            currentPlayer = 'white';
         } else {
             alert(data.message);
         }

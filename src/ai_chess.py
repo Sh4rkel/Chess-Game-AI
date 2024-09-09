@@ -37,11 +37,6 @@ def ai_move(game, model):
     return False
 
 def convert_index_to_move(index):
-    '''
-     Implement this function based on your model's output format
-     For example, if the model outputs a flat index for all possible moves
-     you need to map it back to start and end positions
-    '''
     pass
 
 if __name__ == '__main__':

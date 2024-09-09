@@ -60,8 +60,26 @@ function drag(ev) {
 function updateMoveList(move) {
     const moveList = document.getElementById('move-list');
     const moveItem = document.createElement('li');
-    moveItem.textContent = move;
+    moveItem.innerHTML = move;
     moveList.appendChild(moveItem);
+}
+
+function requestAIMove() {
+    fetch('/ai_move', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json()).then(data => {
+        if (data.status === 'success') {
+            document.getElementById('chess-board-container').innerHTML = data.board;
+            currentPlayer = 'white';  // Switch back to human player
+        } else {
+            alert(data.message);
+        }
+    }).catch(error => {
+        console.error('Fetch error:', error);
+    });
 }
 
 function drop(ev) {
@@ -105,9 +123,12 @@ function drop(ev) {
                 if (data.status === 'error') {
                     alert(data.message);
                 } else {
-                    document.body.innerHTML = data.board;
+                    document.getElementById('chess-board-container').innerHTML = data.board;
                     currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
                     updateMoveList(`${start_notation} to ${end_notation}`);
+                    if (currentPlayer === 'black') {
+                        requestAIMove();
+                    }
                 }
             }).catch(error => {
                 console.error('Fetch error:', error);

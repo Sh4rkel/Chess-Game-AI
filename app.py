@@ -2,9 +2,11 @@ from flask import Flask, request, jsonify, send_from_directory
 import chess
 from src.chess_game import ChessGame
 from src.data_collection import collect_game_data
+from src.ai_chess import load_model, ai_move
+
 app = Flask(__name__)
 game = ChessGame()
-
+model = load_model()
 @app.route('/')
 def index():
     try:
@@ -31,6 +33,21 @@ def move():
             return jsonify({'status': 'error', 'message': 'Invalid move'})
     except Exception as e:
         print(f"Error processing move: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/ai_move', methods=['POST'])
+def ai_move_route():
+    try:
+        if game.current_turn == chess.BLACK:  # Assuming AI plays as black
+            if ai_move(game, model):
+                board_html = game.board.board_to_html('white' if game.current_turn == chess.WHITE else 'black')
+                return jsonify({'status': 'success', 'board': board_html})
+            else:
+                return jsonify({'status': 'error', 'message': 'AI move failed'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Not AI\'s turn'})
+    except Exception as e:
+        print(f"Error processing AI move: {e}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/status', methods=['GET'])

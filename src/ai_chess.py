@@ -1,4 +1,3 @@
-# ai_chess.py
 import numpy as np
 import tensorflow as tf
 from src.chess_game import ChessGame
